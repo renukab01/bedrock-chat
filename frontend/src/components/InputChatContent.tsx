@@ -490,7 +490,7 @@ const InputChatContent = forwardRef<HTMLElement, Props>(
             />
           </div>
           <div className="bottom-0 right-0 flex w-full items-center justify-between px-2">
-            <div className="flex">
+            <div className="flex items-center gap-2">
               <ButtonFileChoose
                 disabled={props.isLoading}
                 icon
@@ -505,6 +505,17 @@ const InputChatContent = forwardRef<HTMLElement, Props>(
                   forceReasoningEnabled={forceReasoningEnabled}
                   onToggleReasoning={() => onChangeReasoning(!reasoningEnabled)}
                 />
+              )}
+              {props.canRegenerate && (
+                <Button
+                  className="bg-aws-paper-light p-2 text-sm dark:bg-aws-paper-dark"
+                  outlined
+                  disabled={props.disabledRegenerate || props.disabled}
+                  onClick={() => {
+                    props.onRegenerate(reasoningEnabled);
+                  }}>
+                  <PiArrowsCounterClockwise className="h-5 w-5" />
+                </Button>
               )}
             </div>
             <ButtonSend
@@ -579,16 +590,6 @@ const InputChatContent = forwardRef<HTMLElement, Props>(
                     {t('button.continue')}
                   </Button>
                 )}
-              <Button
-                className="bg-aws-paper-light p-2 text-sm dark:bg-aws-paper-dark"
-                outlined
-                disabled={props.disabledRegenerate || props.disabled}
-                onClick={() => {
-                  props.onRegenerate(reasoningEnabled);
-                }}>
-                <PiArrowsCounterClockwise className="mr-2" />
-                {t('button.regenerate')}
-              </Button>
             </div>
           )}
         </div>
