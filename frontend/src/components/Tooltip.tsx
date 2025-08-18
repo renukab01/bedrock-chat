@@ -1,6 +1,6 @@
 import React from 'react';
 import { BaseProps } from '../@types/common';
-import { Direction, TooltipDirection } from '../constants';
+import { Direction } from '../constants';
 
 type Props = BaseProps & {
   message: string;
