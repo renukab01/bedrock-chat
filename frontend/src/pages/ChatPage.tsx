@@ -14,7 +14,6 @@ import useScroll from '../hooks/useScroll';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   PiArrowsCounterClockwise,
-  PiPenNib,
   PiWarningCircleFill,
 } from 'react-icons/pi';
 import Button from '../components/Button';
@@ -25,7 +24,7 @@ import useBot from '../hooks/useBot';
 import useConversation from '../hooks/useConversation';
 import { ActiveModels, BotSummary } from '../@types/bot';
 import IconPinnedBot from '../components/IconPinnedBot.tsx';
-
+import pravartanamLogo from '../assets/pravartanam.jpg';
 import { copyBotUrl, isPinnedBot, canBePinned } from '../utils/BotUtils';
 import { toCamelCase } from '../utils/StringUtils';
 import { produce } from 'immer';
@@ -54,10 +53,6 @@ import Skeleton from '../components/Skeleton.tsx';
 import { twMerge } from 'tailwind-merge';
 import ButtonStar from '../components/ButtonStar.tsx';
 import MenuBot from '../components/MenuBot.tsx';
-import pravartanamLogo from '../assets/pravartanam.jpg';
-import questionMarkLogo from '../assets/question-mark.jpg';
-import Tooltip from '../components/Tooltip';
-import { TooltipDirection } from '../constants';
 
 // Default model activation settings when no bot is selected
 const defaultActiveModels: ActiveModels = (() => {
@@ -89,7 +84,6 @@ const ChatPage: React.FC = () => {
     setCurrentMessageId,
     regenerate,
     continueGenerate,
-    getPostedModel,
     loadingConversation,
     getShouldContinue,
     relatedDocuments,
@@ -132,20 +126,15 @@ const ChatPage: React.FC = () => {
     mutate: mutateBot,
   } = useBotSummary(botId ?? undefined);
 
-  const [pageTitle, setPageTitle] = useState('');
+  // Remove unused pageTitle and description variables
   const [isAvailabilityBot, setIsAvailabilityBot] = useState(false);
 
   useEffect(() => {
     setIsAvailabilityBot(false);
     if (bot) {
       setIsAvailabilityBot(true);
-      setPageTitle(bot.title);
-    } else {
-      setPageTitle(t('bot.label.normalChat'));
     }
     if (botError) {
-      setPageTitle(t('bot.label.notAvailableBot'));
-
       // redirect to new chat(no bot chat) if not set conversationId
       if (!conversationId) {
         openSnackbar(t('error.cannotAccessBot'));
@@ -155,14 +144,6 @@ const ChatPage: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bot, botError]);
-
-  const description = useMemo<string>(() => {
-    if (!bot) {
-      return '';
-    } else {
-      return bot.description;
-    }
-  }, [bot]);
 
   const disabledInput = useMemo(() => {
     return botId !== null && !isAvailabilityBot && !isLoadingBot;
