@@ -10,12 +10,11 @@ type Props = BaseProps & {
 
 const Tooltip: React.FC<Props> = (props) => {
   return (
-    <div className={`${props.className ?? ''} group relative dark:text-aws-font-color-dark`}>
+    <div className={`${props.className ?? ''} group relative inline-block dark:text-aws-font-color-dark`}>
       <div
-        className={`${
-          props.direction === TooltipDirection.LEFT ? 'right-0' : ''
-        } invisible absolute -top-5 z-50 bg-transparent p-3 pl-5 pt-8 text-xs font-normal text-white opacity-0 transition group-hover:visible group-hover:opacity-100`}>
-        <div className="w-64 rounded border border-gray bg-black/60 p-1 ">
+        className={`invisible absolute mt-2 transform bg-transparent text-xs font-normal text-black dark:text-white opacity-0 transition-opacity duration-300 group-hover:visible group-hover:opacity-100`}
+        style={{ top: '100%', whiteSpace: 'nowrap', left: '-120px' }}>
+<div className="inline-block rounded-xl border-2 border-gray-400 bg-white dark:bg-aws-paper-dark px-4 py-2">
           {props.message}
         </div>
       </div>
