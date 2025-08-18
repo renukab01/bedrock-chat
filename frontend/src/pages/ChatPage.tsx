@@ -14,6 +14,7 @@ import useScroll from '../hooks/useScroll';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   PiArrowsCounterClockwise,
+
   PiWarningCircleFill,
 } from 'react-icons/pi';
 import Button from '../components/Button';
@@ -24,7 +25,7 @@ import useBot from '../hooks/useBot';
 import useConversation from '../hooks/useConversation';
 import { ActiveModels, BotSummary } from '../@types/bot';
 import IconPinnedBot from '../components/IconPinnedBot.tsx';
-import pravartanamLogo from '../assets/pravartanam.jpg';
+
 import { copyBotUrl, isPinnedBot, canBePinned } from '../utils/BotUtils';
 import { toCamelCase } from '../utils/StringUtils';
 import { produce } from 'immer';
@@ -53,6 +54,7 @@ import Skeleton from '../components/Skeleton.tsx';
 import { twMerge } from 'tailwind-merge';
 import ButtonStar from '../components/ButtonStar.tsx';
 import MenuBot from '../components/MenuBot.tsx';
+import pravartanamLogo from '../assets/pravartanam.jpg';
 
 // Default model activation settings when no bot is selected
 const defaultActiveModels: ActiveModels = (() => {
@@ -126,7 +128,6 @@ const ChatPage: React.FC = () => {
     mutate: mutateBot,
   } = useBotSummary(botId ?? undefined);
 
-  // Remove unused pageTitle and description variables
   const [isAvailabilityBot, setIsAvailabilityBot] = useState(false);
 
   useEffect(() => {
@@ -468,7 +469,7 @@ const ChatPage: React.FC = () => {
       onDrop={endDnd}
       onDragEnd={endDnd}>
       <div className="flex-1 overflow-hidden">
-        <div className="sticky top-0 z-40 mb-4 flex h-24 w-full items-center justify-between border-b border-gray bg-aws-paper-light p-6 dark:bg-aws-paper-dark">
+        <div className="sticky top-0 z-10 mb-4 flex h-24 w-full items-center justify-between border-b border-gray bg-aws-paper-light p-6 dark:bg-aws-paper-dark">
           <div className="flex w-full justify-between">
             <div className="p-2">
               <div className="mr-10 flex items-center whitespace-nowrap font-bold">
@@ -482,15 +483,15 @@ const ChatPage: React.FC = () => {
                        className="w-[100px] h-[80px] mr-3"
                        style={{ marginTop: '11px' }}
                      />
-                    <IconPinnedBot
-                      botSharedStatus={bot?.sharedStatus}
-                      className="mr-1 text-aws-aqua"
-                    />
+                      <IconPinnedBot
+                        botSharedStatus={bot?.sharedStatus}
+                        className="mr-1 text-aws-aqua"
+                      />
                       <div className="flex flex-col">
                         <span>SAIL GPT</span>
                         <span className="text-xs text-gray-600 dark:text-gray-400">Forging The Future With Intelligence Of Tomorrow</span>
                       </div>
-                  </>
+                    </>
                 )}
               </div>
             </div>
@@ -505,58 +506,58 @@ const ChatPage: React.FC = () => {
                   />
                 </>
               )}
-            {isLoadingBot && (
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-5 w-32" />
-                <Skeleton className="size-7" />
-                <Skeleton className="h-7 w-12" />
-              </div>
-            )}
-
-            {isAvailabilityBot && !isLoadingBot && (
-              <div className="absolute -top-1 right-0 flex h-full items-center">
-                <div className="h-full w-12 bg-gradient-to-r from-transparent to-aws-paper-light dark:to-aws-paper-dark"></div>
-                <div className="flex items-center bg-aws-paper-light dark:bg-aws-paper-dark">
-                  {bot?.owned && (
-                    <StatusSyncBot
-                      syncStatus={bot.syncStatus}
-                      onClickError={onClickSyncError}
-                    />
-                  )}
-
-                  <ButtonStar
-                    isStarred={bot?.isStarred ?? false}
-                    onClick={onClickStar}
-                  />
-
-                  <MenuBot
-                    className="mx-1"
-                    {...(bot?.owned && {
-                      onClickEdit: () => {
-                        onClickBotEdit(bot.id);
-                      },
-                    })}
-                    {...(bot?.sharedScope !== 'private' && {
-                      onClickCopyUrl: () => {
-                        onClickCopyUrl(bot?.id ?? '');
-                      },
-                    })}
-                    {...(canSwitchPinned
-                      ? {
-                          onClickSwitchPinned: () => {
-                            bot && togglePinBot(bot);
-                          },
-                          isPinned: isPinnedBot(bot?.sharedStatus ?? ''),
-                        }
-                      : {
-                          isPinned: undefined,
-                          onClickSwitchPinned: undefined,
-                        })}
-                  />
+              {isLoadingBot && (
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-5 w-32" />
+                  <Skeleton className="size-7" />
+                  <Skeleton className="h-7 w-12" />
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+
+              {isAvailabilityBot && !isLoadingBot && (
+                <div className="absolute -top-1 right-0 flex h-full items-center">
+                  <div className="h-full w-12 bg-gradient-to-r from-transparent to-aws-paper-light dark:to-aws-paper-dark"></div>
+                  <div className="flex items-center bg-aws-paper-light dark:bg-aws-paper-dark">
+                    {bot?.owned && (
+                      <StatusSyncBot
+                        syncStatus={bot.syncStatus}
+                        onClickError={onClickSyncError}
+                      />
+                    )}
+
+                    <ButtonStar
+                      isStarred={bot?.isStarred ?? false}
+                      onClick={onClickStar}
+                    />
+
+                    <MenuBot
+                      className="mx-1"
+                      {...(bot?.owned && {
+                        onClickEdit: () => {
+                          onClickBotEdit(bot.id);
+                        },
+                      })}
+                      {...(bot?.sharedScope !== 'private' && {
+                        onClickCopyUrl: () => {
+                          onClickCopyUrl(bot?.id ?? '');
+                        },
+                      })}
+                      {...(canSwitchPinned
+                        ? {
+                            onClickSwitchPinned: () => {
+                              bot && togglePinBot(bot);
+                            },
+                            isPinned: isPinnedBot(bot?.sharedStatus ?? ''),
+                          }
+                        : {
+                            isPinned: undefined,
+                            onClickSwitchPinned: undefined,
+                          })}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           {/* Remove the model display text */}
           {/* {getPostedModel() && (
@@ -565,17 +566,17 @@ const ChatPage: React.FC = () => {
             </div>
           )} */}
         </div>
-        <section className="relative z-50 size-full flex-1 overflow-auto pb-9">
+        <section className="relative size-full flex-1 overflow-auto pb-9">
           <div className="h-full">
             <div
               id="messages"
               role="presentation"
               className="flex h-full flex-col overflow-auto pb-16">
               {messages?.length === 0 ? (
-                <div className="relative mb-[15vh] flex w-full flex-col items-center justify-center">
-                  <div className="w-[800px] rounded-xl border-2 border-gray-400 bg-white p-3 shadow-lg dark:border-gray-600 dark:bg-aws-paper-dark">
+                <div className="relative mb-[20vh] flex w-full flex-col items-center justify-center">
+                  <div className="w-[600px] rounded-xl border-2 border-gray-400 bg-white p-4 shadow-lg dark:border-gray-600 dark:bg-aws-paper-dark">
                     <div className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                      <b>👋 Hi! I'm your SAIL AI Chat Assistant.</b><br/>
+                      👋 Hi! I'm your SAIL AI Chat Assistant.<br/>
                       I'm here to help across Production, Personnel, Finance, Materials, Maintenance, Safety and more.<br/><br/>
                       You can ask me to:<br/>
                       • Draft notes, reports, or official letters 📝<br/>
@@ -586,11 +587,11 @@ const ChatPage: React.FC = () => {
                       Just type your question — I'll do the heavy lifting.<br/>
                       Let's work smarter together! 🚀
                     </div>
-                    <div className="mt-4 flex">
+                    <div className="mt-4">
                       <a 
                         href="/assets/AI Chatbot Features.pdf" 
-                        download="SAIL GPT - Dos and Donts.pdf"
-                        className="rounded-lg border-2 border-gray-400 px-4 py-2 text-sm text-gray-700 transition-transform hover:-translate-y-1 hover:shadow-lg hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800/30"
+                        download="AI Chatbot Features.pdf"
+                        className="inline-block rounded-lg border-2 border-gray-400 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
                       >
                         Do's and Don'ts For User
                       </a>
