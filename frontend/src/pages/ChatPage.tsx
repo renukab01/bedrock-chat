@@ -54,6 +54,10 @@ import Skeleton from '../components/Skeleton.tsx';
 import { twMerge } from 'tailwind-merge';
 import ButtonStar from '../components/ButtonStar.tsx';
 import MenuBot from '../components/MenuBot.tsx';
+import pravartanamLogo from '../assets/pravartanam.jpg';
+import questionMarkLogo from '../assets/question-mark.jpg';
+import Tooltip from '../components/Tooltip';
+import { TooltipDirection } from '../constants';
 
 // Default model activation settings when no bot is selected
 const defaultActiveModels: ActiveModels = (() => {
@@ -483,7 +487,7 @@ const ChatPage: React.FC = () => {
       onDrop={endDnd}
       onDragEnd={endDnd}>
       <div className="flex-1 overflow-hidden">
-        <div className="sticky top-0 z-10 mb-1.5 flex h-14 w-full items-center justify-between border-b border-gray bg-aws-paper-light p-2 dark:bg-aws-paper-dark">
+        <div className="sticky top-0 z-40 mb-4 flex h-24 w-full items-center justify-between border-b border-gray bg-aws-paper-light p-6 dark:bg-aws-paper-dark">
           <div className="flex w-full justify-between">
             <div className="p-2">
               <div className="mr-10 flex items-center whitespace-nowrap font-bold">
@@ -491,16 +495,35 @@ const ChatPage: React.FC = () => {
                   <Skeleton className="h-5 w-32" />
                 ) : (
                   <>
+                     <img 
+                       src={pravartanamLogo} 
+                       alt="Pravartanam Logo" 
+                       className="w-[100px] h-[80px] mr-3"
+                       style={{ marginTop: '11px' }}
+                     />
                     <IconPinnedBot
                       botSharedStatus={bot?.sharedStatus}
                       className="mr-1 text-aws-aqua"
                     />
-                    {pageTitle}
+                      <div className="flex flex-col">
+                        <span>SAIL GPT</span>
+                        <span className="text-xs text-gray-600 dark:text-gray-400">Forging The Future With Intelligence Of Tomorrow</span>
+                      </div>
                   </>
                 )}
               </div>
             </div>
 
+            <div className="flex items-center">
+              {!loadingConversation && (
+                <>
+                  <SwitchBedrockModel
+                    className="mr-4"
+                    activeModels={activeModels}
+                    botId={botId}
+                  />
+                </>
+              )}
             {isLoadingBot && (
               <div className="flex items-center gap-2">
                 <Skeleton className="h-5 w-32" />
@@ -553,48 +576,43 @@ const ChatPage: React.FC = () => {
               </div>
             )}
           </div>
-          {getPostedModel() && (
+          </div>
+          {/* Remove the model display text */}
+          {/* {getPostedModel() && (
             <div className="absolute right-2 top-10 text-xs text-dark-gray dark:text-light-gray">
               model: {getPostedModel()}
             </div>
-          )}
+          )} */}
         </div>
-        <section className="relative size-full flex-1 overflow-auto pb-9">
+        <section className="relative z-50 size-full flex-1 overflow-auto pb-9">
           <div className="h-full">
             <div
               id="messages"
               role="presentation"
               className="flex h-full flex-col overflow-auto pb-16">
               {messages?.length === 0 ? (
-                <div className="relative mb-[45vh]  flex w-full flex-col items-center justify-center">
-                  {!loadingConversation && (
-                    <SwitchBedrockModel
-                      className="mb-6 mt-3 w-min"
-                      activeModels={activeModels}
-                      botId={botId}
-                    />
-                  )}
-                  <div className="px-20">
-                    <div className="px-10 text-lg font-bold">
-                      {isLoadingBot && botId && (
-                        <Skeleton className="h-5 w-32" />
-                      )}
-                      {!isLoadingBot && bot && (
-                        <div className="flex items-baseline">
-                          <IconPinnedBot
-                            botSharedStatus={bot?.sharedStatus}
-                            className="mr-1 shrink-0 text-aws-aqua"
-                          />
-                          <div>{pageTitle}</div>
-                        </div>
-                      )}
+                <div className="relative mb-[15vh] flex w-full flex-col items-center justify-center">
+                  <div className="w-[800px] rounded-xl border-2 border-gray-400 bg-white p-3 shadow-lg dark:border-gray-600 dark:bg-aws-paper-dark">
+                    <div className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                      <b>👋 Hi! I'm your SAIL AI Chat Assistant.</b><br/>
+                      I'm here to help across Production, Personnel, Finance, Materials, Maintenance, Safety and more.<br/><br/>
+                      You can ask me to:<br/>
+                      • Draft notes, reports, or official letters 📝<br/>
+                      • Summarise documents or policies 📄<br/>
+                      • Answer technical & procedural questions ⚙️<br/>
+                      • Suggest ideas & solutions for your daily tasks 💡<br/>
+                      • Share safety tips & best practices 🛡️<br/><br/>
+                      Just type your question — I'll do the heavy lifting.<br/>
+                      Let's work smarter together! 🚀
                     </div>
-                    <div className="mt-3 text-xs text-dark-gray dark:text-light-gray">
-                      {isLoadingBot ? (
-                        <Skeleton className="mt-1 h-3 w-64" />
-                      ) : (
-                        description
-                      )}
+                    <div className="mt-4 flex">
+                      <a 
+                        href="/assets/AI Chatbot Features.pdf" 
+                        download="SAIL GPT - Dos and Donts.pdf"
+                        className="rounded-lg border-2 border-gray-400 px-4 py-2 text-sm text-gray-700 transition-transform hover:-translate-y-1 hover:shadow-lg hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800/30"
+                      >
+                        Do's and Don'ts For User
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -653,7 +671,7 @@ const ChatPage: React.FC = () => {
       <div
         className={twMerge(
           'bottom-0 z-0 flex w-full flex-col items-center justify-center',
-          messages.length === 0 ? 'absolute top-2/3 -translate-y-1/2' : ''
+          messages.length === 0 ? 'absolute bottom-10' : ''
         )}>
         {bot && bot.syncStatus !== SyncStatus.SUCCEEDED && (
           <div className="mb-8 w-1/2">
@@ -664,24 +682,6 @@ const ChatPage: React.FC = () => {
             </Alert>
           </div>
         )}
-        {messages.length === 0 && (
-          <div className="mb-3 flex w-11/12 flex-wrap-reverse justify-start gap-2 md:w-10/12 lg:w-4/6 xl:w-3/6">
-            {bot?.conversationQuickStarters?.map((qs, idx) => (
-              <div
-                key={idx}
-                className="w-[calc(33.333%-0.5rem)] cursor-pointer rounded-2xl border border-aws-squid-ink-light/20 bg-white p-2 text-sm  text-dark-gray hover:shadow-lg hover:shadow-gray  dark:border-aws-squid-ink-dark/20 dark:text-light-gray"
-                onClick={() => {
-                  onSend(qs.example, reasoningEnabled);
-                }}>
-                <div>
-                  <PiPenNib />
-                </div>
-                {qs.title}
-              </div>
-            ))}
-          </div>
-        )}
-
         <InputChatContent
           className="mb-7 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6"
           dndMode={dndMode}
