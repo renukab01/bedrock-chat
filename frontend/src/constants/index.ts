@@ -82,7 +82,6 @@ export const GUARDRAILS_CONTECTUAL_GROUNDING_THRESHOLD = {
 };
 
 export const AVAILABLE_MODEL_KEYS = [
-  'claude-v4-opus',
   'claude-v4-sonnet',
   'claude-v3-opus',
   'claude-v3.5-sonnet',

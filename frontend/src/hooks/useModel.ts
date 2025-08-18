@@ -28,7 +28,7 @@ const LLAMA_SUPPORTED_MEDIA_TYPES = [
   'image/webp',
 ];
 
-const DEFAULT_MODEL: Model = 'claude-v3.7-sonnet';
+const DEFAULT_MODEL: Model = 'claude-v4-sonnet';
 
 const useModelState = create<{
   modelId: Model;
@@ -82,13 +82,6 @@ const useModel = (botId?: string | null, activeModels?: ActiveModels) => {
     }[]
   >(() => {
     return [
-      {
-        modelId: 'claude-v4-opus',
-        label: t('model.claude-v4-opus.label'),
-        description: t('model.claude-v4-opus.description'),
-        supportMediaType: CLAUDE_SUPPORTED_MEDIA_TYPES,
-        supportReasoning: true,
-      },
       {
         modelId: 'claude-v4-sonnet',
         label: t('model.claude-v4-sonnet.label'),

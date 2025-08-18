@@ -469,29 +469,29 @@ const ChatPage: React.FC = () => {
       onDrop={endDnd}
       onDragEnd={endDnd}>
       <div className="flex-1 overflow-hidden">
-        <div className="sticky top-0 z-10 mb-4 flex h-24 w-full items-center justify-between border-b border-gray bg-aws-paper-light p-6 dark:bg-aws-paper-dark">
+        <div className="sticky top-0 z-10 mb-4 flex h-24 w-full items-center justify-between border-b border-gray bg-aws-paper-light p-4 sm:p-6 dark:bg-aws-paper-dark">
           <div className="flex w-full justify-between">
             <div className="p-2">
-              <div className="mr-10 flex items-center whitespace-nowrap font-bold">
+              <div className="flex items-center whitespace-nowrap font-bold">
                 {isLoadingBot ? (
                   <Skeleton className="h-5 w-32" />
                 ) : (
                   <>
-                     <img 
-                       src={pravartanamLogo} 
-                       alt="Pravartanam Logo" 
-                       className="w-[100px] h-[80px] mr-3"
-                       style={{ marginTop: '11px' }}
-                     />
-                      <IconPinnedBot
-                        botSharedStatus={bot?.sharedStatus}
-                        className="mr-1 text-aws-aqua"
-                      />
-                      <div className="flex flex-col">
-                        <span>SAIL GPT</span>
-                        <span className="text-xs text-gray-600 dark:text-gray-400">Forging The Future With Intelligence Of Tomorrow</span>
-                      </div>
-                    </>
+                    <img 
+                      src={pravartanamLogo} 
+                      alt="Pravartanam Logo" 
+                      className="w-[60px] h-[50px] sm:w-[85px] sm:h-[70px] mr-3 object-contain"
+                      style={{ marginTop: '11px' }}
+                    />
+                    <IconPinnedBot
+                      botSharedStatus={bot?.sharedStatus}
+                      className="mr-1 text-aws-aqua"
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-lg sm:text-xl">SAIL GPT</span>
+                      <span className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Forging The Future With Intelligence Of Tomorrow</span>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
@@ -573,9 +573,9 @@ const ChatPage: React.FC = () => {
               role="presentation"
               className="flex h-full flex-col overflow-auto pb-16">
               {messages?.length === 0 ? (
-                <div className="relative mb-[20vh] flex w-full flex-col items-center justify-center">
-                  <div className="w-[600px] rounded-xl border-2 border-gray-400 bg-white p-4 shadow-lg dark:border-gray-600 dark:bg-aws-paper-dark">
-                    <div className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                <div className="relative mb-[20vh] flex w-full flex-col items-center justify-center px-4">
+                  <div className="w-full max-w-[600px] rounded-xl border border-aws-squid-ink-light/50 bg-aws-paper-light p-4 shadow-sm dark:border-aws-squid-ink-dark/50 dark:bg-aws-paper-dark">
+                    <div className="text-xs sm:text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                       👋 Hi! I'm your SAIL AI Chat Assistant.<br/>
                       I'm here to help across Production, Personnel, Finance, Materials, Maintenance, Safety and more.<br/><br/>
                       You can ask me to:<br/>
@@ -591,7 +591,7 @@ const ChatPage: React.FC = () => {
                       <a 
                         href="/assets/AI Chatbot Features.pdf" 
                         download="AI Chatbot Features.pdf"
-                        className="inline-block rounded-lg border-2 border-gray-400 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
+                        className="inline-block rounded-lg border-2 border-gray-400 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
                       >
                         Do's and Don'ts For User
                       </a>
@@ -652,11 +652,11 @@ const ChatPage: React.FC = () => {
 
       <div
         className={twMerge(
-          'bottom-0 z-0 flex w-full flex-col items-center justify-center',
-          messages.length === 0 ? 'absolute bottom-10' : ''
+          'bottom-0 z-0 flex w-full flex-col items-center justify-center px-4',
+          messages.length === 0 ? 'absolute bottom-4 sm:bottom-10' : ''
         )}>
         {bot && bot.syncStatus !== SyncStatus.SUCCEEDED && (
-          <div className="mb-8 w-1/2">
+          <div className="mb-4 sm:mb-8 w-full max-w-[600px]">
             <Alert
               severity="warning"
               title={t('bot.alert.sync.incomplete.title')}>
@@ -665,7 +665,7 @@ const ChatPage: React.FC = () => {
           </div>
         )}
         <InputChatContent
-          className="mb-7 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6"
+          className="mb-4 sm:mb-7 w-full max-w-[600px]"
           dndMode={dndMode}
           disabledSend={postingMessage || hasError}
           disabledRegenerate={postingMessage || hasError}
@@ -688,6 +688,9 @@ const ChatPage: React.FC = () => {
           reasoningEnabled={reasoningEnabled}
           onChangeReasoning={setReasoningEnabled}
         />
+        <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+          Powered by Amazon Bedrock and AWS Cloud Services
+        </div>
       </div>
       <BottomHelper />
     </div>
