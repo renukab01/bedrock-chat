@@ -4,6 +4,11 @@ const translation = {
       button: {
         login: 'Iniciar sesión',
       },
+      fields: {
+        mobileNumber: 'Número de teléfono móvil',
+        mobileNumberPlaceholder: 'Ingresa tu número de teléfono móvil',
+        mobileNumberOptional: 'Número de teléfono móvil (Opcional)',
+      },
     },
     app: {
       name: 'Chat Bedrock',

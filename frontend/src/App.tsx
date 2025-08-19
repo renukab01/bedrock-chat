@@ -27,6 +27,27 @@ const App: React.FC = () => {
     document.title = t('app.name')
   }, [t]);
 
+  useEffect(() => {
+    // Inject custom CSS to reduce font size of OTP text
+    const style = document.createElement('style');
+    style.textContent = `
+      [data-amplify-authenticator] [data-amplify-heading],
+      [data-amplify-authenticator] h1,
+      [data-amplify-authenticator] .amplify-heading {
+        font-size: 15px !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   Amplify.configure({
     Auth: {
       Cognito: {
@@ -45,7 +66,20 @@ const App: React.FC = () => {
     },
   });
 
+  // Custom translations to override default Amplify text
+  const customTranslations = {
+    en: {
+      'Confirm SMS Code': 'Input the OTP shared on the registered mobile number',
+      'Code': 'OTP',
+      'Confirm': 'Verify OTP',
+      'Code *': 'OTP *',
+      'Enter your code': 'Enter your OTP',
+      'Enter code': 'Enter OTP'
+    }
+  };
+
   I18n.putVocabularies(translations);
+  I18n.putVocabularies(customTranslations);
   I18n.setLanguage(i18n.language);
 
   return (

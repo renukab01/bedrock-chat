@@ -622,6 +622,8 @@ const ChatPage: React.FC = () => {
                       <div className="w-full border-b border-aws-squid-ink-light/10 dark:border-aws-squid-ink-dark/10"></div>
                     </div>
                   ))}
+                  {/* Add spacing between messages and input box */}
+                  <div className="pb-8 sm:pb-12"></div>
                 </>
               )}
               {hasError && (
@@ -665,7 +667,7 @@ const ChatPage: React.FC = () => {
           </div>
         )}
         <InputChatContent
-          className="mb-4 sm:mb-7 w-full max-w-[600px]"
+          className="mb-4 sm:mb-7 mt-4 sm:mt-6 w-full max-w-[600px]"
           dndMode={dndMode}
           disabledSend={postingMessage || hasError}
           disabledRegenerate={postingMessage || hasError}

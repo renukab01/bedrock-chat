@@ -4,6 +4,11 @@ const translation = {
       button: {
         login: 'Login',
       },
+      fields: {
+        mobileNumber: 'Mobile Number',
+        mobileNumberPlaceholder: 'Enter your mobile number',
+        mobileNumberOptional: 'Mobile Number',
+      },
     },
     app: {
       name: 'Bedrock Chat',
