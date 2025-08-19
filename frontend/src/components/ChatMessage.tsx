@@ -86,6 +86,68 @@ const ChatMessage: React.FC<Props> = (props) => {
     }
   }, [props.relatedDocuments, chatContent]);
 
+  // Function to extract sourceLinks from relatedDocuments and append them to response text
+  const getResponseTextWithSourceLinks = useMemo(() => {
+    if (!chatContent || chatContent.role !== 'assistant') {
+      return '';
+    }
+
+    // Get the original response text
+    const originalText = chatContent.content
+      .filter((content) => content.contentType === 'text')
+      .map((content) => (content as TextContent).body)
+      .join('\n');
+
+    // Get the current message's tool use IDs from thinkingLog
+    const currentToolUseIds = new Set<string>();
+    
+    if (chatContent.thinkingLog) {
+      chatContent.thinkingLog.forEach(log => {
+        log.content.forEach(content => {
+          if (content.contentType === 'toolUse') {
+            currentToolUseIds.add(content.body.toolUseId);
+          }
+        });
+      });
+    }
+
+    // Extract sourceLinks only from relatedDocuments that belong to the current message's tool usage
+    const sourceLinks = relatedDocuments
+      ?.filter((doc) => {
+        // Only include documents that have a sourceLink
+        if (!doc.sourceLink || doc.sourceLink.trim() === '') {
+          return false;
+        }
+        
+        // Check if this document belongs to the current message's tool usage
+        // The sourceId should match one of the current tool use IDs
+        return currentToolUseIds.has(doc.sourceId) || 
+               currentToolUseIds.has(doc.sourceId.split('@')[0]); // Handle array results
+      })
+      .map((doc) => ({
+        sourceName: doc.sourceName || 'Generated content',
+        sourceLink: doc.sourceLink!,
+      }))
+      .filter((item, index, self) => 
+        index === self.findIndex((t) => t.sourceLink === item.sourceLink)
+      ) || [];
+
+    // If no sourceLinks, return original text
+    if (sourceLinks.length === 0) {
+      return originalText;
+    }
+
+    // Append sourceLinks to the response text with better formatting
+    const sourceLinksText = sourceLinks
+      .map((item) => `\n\n📎 **${item.sourceName}:** [Download here](${item.sourceLink})`)
+      .join('');
+
+    // Add a header if there are multiple sourceLinks
+    const header = sourceLinks.length > 1 ? '\n\n---\n**📁 Generated Files:**' : '\n\n---\n**📁 Generated File:**';
+    
+    return originalText + header + sourceLinksText;
+  }, [chatContent, relatedDocuments]);
+
   const reasoning = useMemo(() => {
     if (props.reasoning != null && props.reasoning.content != '') {
       return props.reasoning;
@@ -113,14 +175,35 @@ const ChatMessage: React.FC<Props> = (props) => {
     if (props.tools != null) {
       return props.tools;
     }
-    if (chatContent?.thinkingLog == null) {
-      return undefined;
+
+    if (chatContent?.thinkingLog != null) {
+      return convertThinkingLogToAgentToolProps(
+        chatContent.thinkingLog,
+        relatedDocuments
+      );
     }
-    return convertThinkingLogToAgentToolProps(
-      chatContent.thinkingLog,
-      relatedDocuments
-    );
+
+    return undefined;
   }, [props.tools, chatContent, relatedDocuments]);
+
+  // Function to get response text with sourceLinks, but only when tools are used
+  const getFinalResponseText = useMemo(() => {
+    const baseText = getResponseTextWithSourceLinks;
+    
+    // Only append sourceLinks if tools were used (check if there are tools or thinkingLog)
+    const hasToolsUsed = tools && tools.length > 0;
+    const hasThinkingLog = chatContent?.thinkingLog && chatContent.thinkingLog.length > 0;
+    
+    if (!hasToolsUsed && !hasThinkingLog) {
+      // If no tools were used, return just the original text without sourceLinks
+      return chatContent?.content
+        .filter((content) => content.contentType === 'text')
+        .map((content) => (content as TextContent).body)
+        .join('\n') || '';
+    }
+    
+    return baseText;
+  }, [getResponseTextWithSourceLinks, tools, chatContent]);
 
   const nodeIndex = useMemo(() => {
     return chatContent?.sibling.findIndex((s) => s === chatContent.id) ?? -1;
@@ -341,10 +424,7 @@ const ChatMessage: React.FC<Props> = (props) => {
               isStreaming={props.isStreaming}
               relatedDocuments={relatedDocuments}
               messageId={chatContent.id}>
-              {chatContent.content
-                .filter((content) => content.contentType === 'text')
-                .map((content) => (content as TextContent).body)
-                .join('\n')}
+              {getFinalResponseText}
             </ChatMessageMarkdown>
           )}
         </div>

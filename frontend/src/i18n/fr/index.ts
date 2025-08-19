@@ -1,5 +1,15 @@
 const translation = {
   translation: {
+    signIn: {
+      button: {
+        login: 'Connexion',
+      },
+      fields: {
+        mobileNumber: 'Numéro de téléphone mobile',
+        mobileNumberPlaceholder: 'Entrez votre numéro de téléphone mobile',
+        mobileNumberOptional: 'Numéro de téléphone mobile (Optionnel)',
+      },
+    },
     app: {
       name: 'Bedrock Chat',
       inputMessage: 'Envoyer un message',

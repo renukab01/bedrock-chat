@@ -7,6 +7,11 @@ const translation: typeof en = {
       button: {
         login: 'ログイン',
       },
+      fields: {
+        mobileNumber: '携帯電話番号',
+        mobileNumberPlaceholder: '携帯電話番号を入力してください',
+        mobileNumberOptional: '携帯電話番号（任意）',
+      },
     },
     app: {
       name: 'Bedrock Chat',
