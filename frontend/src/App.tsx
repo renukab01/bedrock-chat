@@ -62,6 +62,19 @@ const App: React.FC = () => {
             responseType: 'code',
           },
         },
+        // Add configuration for handling OTP challenges
+        signUpVerificationMethod: 'code',
+        userAttributes: {
+          email: {
+            required: true,
+          },
+        },
+        // Enable MFA configuration
+        mfa: {
+          status: 'on',
+          totpEnabled: true,
+          smsEnabled: true,
+        },
       },
     },
   });
@@ -69,12 +82,33 @@ const App: React.FC = () => {
   // Custom translations to override default Amplify text
   const customTranslations = {
     en: {
-      'Confirm SMS Code': 'Input the OTP shared on the registered mobile number',
+      'Confirm SMS Code': 'Enter the OTP sent to your email or mobile',
       'Code': 'OTP',
       'Confirm': 'Verify OTP',
       'Code *': 'OTP *',
       'Enter your code': 'Enter your OTP',
-      'Enter code': 'Enter OTP'
+      'Enter code': 'Enter OTP',
+      'Confirm Sign In': 'Verify OTP',
+      'Enter your confirmation code': 'Enter the OTP sent to your email or mobile',
+      'Confirmation Code': 'OTP Code',
+      'Confirmation Code *': 'OTP Code *',
+      'EMAIL_OTP': 'Email OTP',
+      'SMS_OTP': 'SMS OTP',
+      'Challenge': 'OTP Challenge',
+      'Enter your email code': 'Enter the OTP sent to your email or mobile',
+      'Enter your SMS code': 'Enter the OTP sent to your email or mobile',
+      'Email code': 'OTP Code',
+      'SMS code': 'OTP Code',
+      'Please enter the code sent to your email': 'Please enter the OTP sent to your email or mobile',
+      'Please enter the code sent to your mobile': 'Please enter the OTP sent to your email or mobile',
+      'Invalid code': 'Invalid OTP code. Please try again.',
+      'Code is required': 'OTP code is required',
+      'Code must be 6 digits': 'OTP code must be 6 digits',
+      'We sent a code to': 'We sent an OTP to',
+      'Enter the code we sent to': 'Enter the OTP we sent to',
+      'Didn\'t receive a code?': 'Didn\'t receive an OTP?',
+      'Resend code': 'Resend OTP',
+      'Resend': 'Resend OTP'
     }
   };
 
